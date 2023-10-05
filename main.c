@@ -7,34 +7,30 @@
 #include "./NeoPixel/NeoPixel.h"
 #include "FileSystem.h"
 #include "LCD.h"
-
+char fileNames[255][255];
+struct Leds leds[10][10][10];
 int main()
 {
     stdio_init_all();
     SystemCoreClockUpdate();
 
-    FRESULT fr;
-    FATFS fs;
-    FILINFO fileInfo;
-    FIL fil;
+    for(int i = 0;i<10;i++)
+    {
+        for(int x = 0;x<10;x++)
+        {
+            memset(leds[i][x],255,sizeof(struct Leds)*10);
+        }
+    }
+
+    initSd();
+    mountAndUnmount(true);
+    openFile("cubo.txt");
+    writeCubeDataColors(leds);
+    mountAndUnmount(false);
     
     lcd_init(16,17);
-    // Initialize SD card
-    if (!sd_init_driver()) {
-        printf("ERROR: Could not initialize SD card\r\n");
-        while (true);
-    }
+    
 
-    // Mount drive
-    fr = f_mount(&fs, "0:", 1);
-    if (fr != FR_OK) {
-        printf("ERROR: Could not mount filesystem (%d)\r\n", fr);
-        while (true);
-    }
-    char a[255][255];
 
-    int cant = fileNames(a);
-
-    showFileNames(1,a,cant);
     return 0;
 }

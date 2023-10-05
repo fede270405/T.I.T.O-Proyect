@@ -5,9 +5,32 @@ FATFS fs;
 FILINFO fileInfo;
 FIL fil;
 
+void initSd()
+{
+    if (!sd_init_driver()) {
+    printf("ERROR: Could not initialize SD card\r\n");
+    while (true);
+    }
+}
 
+void mountAndUnmount(bool mount)
+{
+    if(mount)
+    {
+        fr = f_mount(&fs, "0:", 1);
+        if (fr != FR_OK) {
+            printf("ERROR: Could not mount filesystem (%d)\r\n", fr);
+            while (true);
+        }
+    }
+    else
+    {
+        f_unmount("0:");
+    }
 
-int fileNames(char fileNames[][255])
+}
+
+int readFileNames(char fileNames[][255])
 {
     for(int i = 0; i<255;i++)
     {
@@ -53,3 +76,27 @@ int fileNames(char fileNames[][255])
         return -1;
     }
 }
+
+void openFile(char *fileName)
+{
+    fr = f_open(&fil, fileName, FA_WRITE| FA_CREATE_ALWAYS);
+    if (fr != FR_OK) {
+        printf("ERROR: Could not open file (%d)\r\n", fr);
+        while (true);
+    }
+}
+void writeCubeDataColors(struct Leds leds[][10][10])
+{
+    uint32_t aux;
+    struct Leds lectura [1000]; // alto, ancho y prof
+
+    // indice = alto * ancho * z + ancho * y + x
+
+    f_write(&fil, leds, sizeof(struct Leds) * 1000, &aux);
+    f_read(&fil, &lectura, sizeof(struct Leds) * 1000, &aux);
+    fr = f_close(&fil);
+    if (fr != FR_OK) {
+        printf("ERROR: Could not close file (%d)\r\n", fr);
+        while (true);
+    }
+ }

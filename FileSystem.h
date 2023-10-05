@@ -7,8 +7,13 @@
 #include "pico/malloc.h"
 #include "pico/mem_ops.h"
 #include "ff.h"
+#include "./NeoPixel/NeoPixel.h"
 
 #define EXTENSION ".tito3d"
 
-int fileNames(char fileNames[][255]);
+int readFileNames(char fileNames[][255]);
+void writeCubeDataColors(struct Leds leds[][10][10]);
+void mountAndUnmount(bool mount);
+void initSd();
+void openFile(char *fileName);
 #endif

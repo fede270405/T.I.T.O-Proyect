@@ -7,6 +7,10 @@
 #include "RP2040.h"
 
 #define CANT_LEDS 10
+typedef struct Leds
+{
+    uint8_t r,g,b;
+};
 
 void initLedPorts();
 void setLedPwmData(uint8_t red, uint8_t green, uint8_t blue,uint8_t ledNum, uint8_t channel);
