@@ -36,29 +36,5 @@ int main()
     int cant = fileNames(a);
 
     showFileNames(1,a,cant);
-    
-
-
-    
-
-/*         DIR dir;
-        fr = f_opendir(&dir, "/");
-        if (fr == FR_OK) {
-            // Read directory entries
-            while (true) {
-                fr = f_readdir(&dir, &fileInfo);
-                if (fr != FR_OK || fileInfo.fname[0] == 0) {
-                    break; // No more files in the directory
-                }
-
-                if (fileInfo.fattrib & AM_DIR) {
-                    // It's a directory
-                    printf("Directory: %s\n", fileInfo.fname);
-                } else {
-                    // It's a regular file
-                    printf("File: %s\n", fileInfo.fname);
-                }
-            }
-} */
     return 0;
 }
