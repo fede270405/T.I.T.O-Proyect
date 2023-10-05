@@ -83,7 +83,7 @@ int nameFileSize(char * str)
 
 void showFileNames (int cursor,char fileNames[][255],int size)
 {
-    for(int i = 0; i<4;i++)
+    for(int i = cursor; i< cursor+4 ;i++)
     {
         
         if(i<size)
@@ -92,14 +92,13 @@ void showFileNames (int cursor,char fileNames[][255],int size)
             memset(auxil,'\0',20);
             strncpy(auxil,fileNames[i],20);
             auxil[nameFileSize(fileNames[i])]= '\0';
-            if(i == 0)
-            {
-                lcd_setCursor(i,nameFileSize(fileNames[i])+1);
-                
-                lcd_write(CURSOR);
-            }
-            lcd_setCursor(i,0);
+
+            lcd_setCursor(i-cursor,0);
             lcd_print(auxil);
+
+            lcd_setCursor(0,nameFileSize(fileNames[cursor])+1);
+            lcd_write(CURSOR);
+
         }
     }
     
