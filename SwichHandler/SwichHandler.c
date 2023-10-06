@@ -15,8 +15,16 @@ void initButton()
     gpio_set_dir(DOWN,GPIO_IN);
 
     enter.pin = ENTER;
-    enter.pin = UP;
-    enter.pin = DOWN;
+    enter.state = false;
+    enter.last_pressed_time =0;
+
+    up.pin = UP;
+    up.state = false;
+    up.last_pressed_time =0;
+
+    down.pin = DOWN;
+    down.state = false;
+    down.last_pressed_time =0;
 }
 
 
@@ -40,4 +48,19 @@ bool deBounceButton(struct DebouncedButton * button)
         }
     }
     return false;
+}
+
+int moveMenuCursor()
+{
+    int cursor = 0;
+    if(deBounceButton(&up))
+    {
+        printf("pulsadex");
+        cursor = 1;
+    }
+    if(deBounceButton(&down))
+    {
+      cursor = -1;
+    }
+    return cursor;
 }

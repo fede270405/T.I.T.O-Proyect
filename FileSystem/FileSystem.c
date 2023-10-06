@@ -68,7 +68,8 @@ int readFileNames(char fileNames[][255])
                 }   
             }
 
-         }  
+         } 
+         strncpy(fileNames[fileNum++],"unmount.tito3d", 255);  
          return fileNum;
     }
     else

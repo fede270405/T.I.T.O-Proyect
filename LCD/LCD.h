@@ -5,6 +5,7 @@
 #include <string.h>
 #include "hardware/i2c.h"
 #include "pico/stdlib.h"
+#include "../SwichHandler/SwichHandler.h"
 #define LCD_CLEARDISPLAY 0x01 
 #define LCD_RETURNHOME 0x02 
 #define LCD_ENTRYMODESET 0x04 
@@ -32,6 +33,8 @@
 
 
 #define CURSOR  '<'
+#define START 0
+#define FILES 1
 void lcd_init(uint8_t sda, uint8_t scl);
 void lcd_print(const char *s);
 void lcd_setCursor(uint8_t line, uint8_t position);

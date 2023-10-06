@@ -33,6 +33,7 @@
         "sd_card.h": "c",
         "spi.h": "c",
         "string.h": "c",
-        "filesystem.h": "c"
+        "filesystem.h": "c",
+        "stdio.h": "c"
     }
 }

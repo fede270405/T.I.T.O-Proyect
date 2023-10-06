@@ -27,7 +27,8 @@ add_executable(T.I.T.O-Proyect
     ./kiss_FFT/kiss_fft.c
     ./FileSystem/FileSystem.c
     ./LCD/LCD.c
-    SwichHandler.c
+    ./SwichHandler/SwichHandler.c
+    TITOLedCore.c
 )
 
 add_subdirectory(./FatFs_SPI build)
