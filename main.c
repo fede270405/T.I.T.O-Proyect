@@ -5,32 +5,17 @@
 #include "ff.h"
 #include "pico/stdlib.h"
 #include "./NeoPixel/NeoPixel.h"
-#include "FileSystem.h"
-#include "LCD.h"
+#include "./FileSystem/FileSystem.h"
+#include "./LCD/LCD.h"
 char fileNames[255][255];
-struct Leds leds[10][10][10];
+
+struct Leds leds[1000];
 int main()
 {
+
+    
     stdio_init_all();
     SystemCoreClockUpdate();
-
-    for(int i = 0;i<10;i++)
-    {
-        for(int x = 0;x<10;x++)
-        {
-            memset(leds[i][x],255,sizeof(struct Leds)*10);
-        }
-    }
-
-    initSd();
-    mountAndUnmount(true);
-    openFile("cubo.txt");
-    writeCubeDataColors(leds);
-    mountAndUnmount(false);
-    
-    lcd_init(16,17);
-    
-
-
+    memset(leds,255,sizeof(struct Leds)*1000);
     return 0;
 }

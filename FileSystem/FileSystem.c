@@ -13,7 +13,7 @@ void initSd()
     }
 }
 
-void mountAndUnmount(bool mount)
+void toggleSDCardMount(bool mount)
 {
     if(mount)
     {
@@ -77,26 +77,37 @@ int readFileNames(char fileNames[][255])
     }
 }
 
-void openFile(char *fileName)
+void toggleFileAccess(char *fileName,bool open)
 {
-    fr = f_open(&fil, fileName, FA_WRITE| FA_CREATE_ALWAYS);
-    if (fr != FR_OK) {
-        printf("ERROR: Could not open file (%d)\r\n", fr);
-        while (true);
+    if(open)
+    {
+        fr = f_open(&fil, fileName, FA_WRITE| FA_CREATE_ALWAYS);
+        if (fr != FR_OK) {
+            printf("ERROR: Could not open file (%d)\r\n", fr);
+            while (true);
+        }
     }
+    else
+    {
+        fr = f_close(&fil);
+        if (fr != FR_OK) {
+            printf("ERROR: Could not close file (%d)\r\n", fr);
+            while (true);
+        }
+    }
+
 }
-void writeCubeDataColors(struct Leds leds[][10][10])
+
+void writeCubeDataColors(struct Leds *leds,uint16_t index)
 {
-    uint32_t aux;
-    struct Leds lectura [1000]; // alto, ancho y prof
+    uint32_t position = index * sizeof(struct Leds) * 1000;
+    f_lseek(&fil,position);
+    f_write(&fil, leds, sizeof(struct Leds) * 1000, &leds);
+ }
 
-    // indice = alto * ancho * z + ancho * y + x
-
-    f_write(&fil, leds, sizeof(struct Leds) * 1000, &aux);
-    f_read(&fil, &lectura, sizeof(struct Leds) * 1000, &aux);
-    fr = f_close(&fil);
-    if (fr != FR_OK) {
-        printf("ERROR: Could not close file (%d)\r\n", fr);
-        while (true);
-    }
+ void readCubeDataColors(struct Leds *leds,uint16_t index)
+ {
+    uint32_t position = index * sizeof(struct Leds) * 1000;
+    f_lseek(&fil,position);
+    f_write(&fil, leds, sizeof(struct Leds) * 1000, &leds);
  }

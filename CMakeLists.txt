@@ -25,8 +25,9 @@ add_executable(T.I.T.O-Proyect
     main.c
     ./NeoPixel/NeoPixel.c
     ./kiss_FFT/kiss_fft.c
-    FileSystem.c
-    LCD.c
+    ./FileSystem/FileSystem.c
+    ./LCD/LCD.c
+    SwichHandler.c
 )
 
 add_subdirectory(./FatFs_SPI build)

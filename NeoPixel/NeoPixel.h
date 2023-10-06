@@ -7,6 +7,7 @@
 #include "RP2040.h"
 
 #define CANT_LEDS 10
+#define CALCULATE_INDEX(x,y,z) (10*10*(z)+10 *(y)+(x))
 typedef struct Leds
 {
     uint8_t r,g,b;

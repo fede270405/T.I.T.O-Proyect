@@ -32,6 +32,7 @@
         "neopixel.h": "c",
         "sd_card.h": "c",
         "spi.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "filesystem.h": "c"
     }
 }
