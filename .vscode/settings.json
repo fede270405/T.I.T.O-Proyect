@@ -34,6 +34,7 @@
         "spi.h": "c",
         "string.h": "c",
         "filesystem.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "lcd.h": "c"
     }
 }

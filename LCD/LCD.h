@@ -33,11 +33,11 @@
 
 
 #define CURSOR  '<'
-#define START 0
-#define FILES 1
+
 void lcd_init(uint8_t sda, uint8_t scl);
 void lcd_print(const char *s);
 void lcd_setCursor(uint8_t line, uint8_t position);
 int nameFileSize(char * str);
 void showFileNames (int cursor,char fileNames[][255],int size);
+void lcd_clear(void);
 #endif

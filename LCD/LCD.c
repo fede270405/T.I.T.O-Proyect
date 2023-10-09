@@ -105,36 +105,3 @@ void showFileNames (int cursor,char fileNames[][255],int size)
     
 }
 
-void manageMenuState(int cursor,char fileNames[][255],int cant)
-{
-    static int menuStates = START;
-    static bool writen = false;
-    switch(menuStates)
-    {
-        case START:
-            if(!writen)
-            {
-                lcd_setCursor(0,0);
-                lcd_print("NO DATA");
-                lcd_setCursor(2,0);
-                lcd_print("Mount, press ENTER");
-                writen = true;
-            }
-
-        break;
-    }
-        int a = moveMenuCursor();
-        if(a != 0)
-        {
-            cursor += a;
-            if(cursor <0){
-                cursor = 0;
-            } 
-            if(cursor >cant-1)
-            {
-                cursor = cant-1;
-            }
-            showFileNames(cursor,fileNames,cant);
-        }
-        
-}

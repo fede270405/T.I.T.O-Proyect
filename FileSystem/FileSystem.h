@@ -13,7 +13,7 @@
 
 int readFileNames(char fileNames[][255]);
 void writeCubeDataColors(struct Leds *leds,uint16_t index);
-void toggleSDCardMount(bool mount);
+bool toggleSDCardMount(bool mount);
 void initSd();
-void toggleFileAccess(char *fileName,bool open);
+bool toggleFileAccess(char *fileName,bool open);
 #endif

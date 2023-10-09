@@ -16,4 +16,5 @@ struct DebouncedButton{
 
 int moveMenuCursor();
 void initButton();
+bool getEnterButton();
 #endif

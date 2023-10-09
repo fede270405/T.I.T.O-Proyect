@@ -13,21 +13,20 @@ void initSd()
     }
 }
 
-void toggleSDCardMount(bool mount)
+bool toggleSDCardMount(bool mount)
 {
     if(mount)
     {
         fr = f_mount(&fs, "0:", 1);
         if (fr != FR_OK) {
-            printf("ERROR: Could not mount filesystem (%d)\r\n", fr);
-            while (true);
+         return false;
         }
     }
     else
     {
         f_unmount("0:");
     }
-
+    return true;
 }
 
 int readFileNames(char fileNames[][255])
@@ -78,25 +77,25 @@ int readFileNames(char fileNames[][255])
     }
 }
 
-void toggleFileAccess(char *fileName,bool open)
+bool toggleFileAccess(char *fileName,bool open)
 {
     if(open)
     {
         fr = f_open(&fil, fileName, FA_WRITE| FA_CREATE_ALWAYS);
-        if (fr != FR_OK) {
-            printf("ERROR: Could not open file (%d)\r\n", fr);
-            while (true);
+        if (fr != FR_OK) 
+        {
+            return false;
         }
     }
     else
     {
         fr = f_close(&fil);
-        if (fr != FR_OK) {
-            printf("ERROR: Could not close file (%d)\r\n", fr);
-            while (true);
+        if (fr != FR_OK) 
+        {
+            return false;
         }
     }
-
+    return true;
 }
 
 void writeCubeDataColors(struct Leds *leds,uint16_t index)

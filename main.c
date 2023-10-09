@@ -7,10 +7,12 @@
 #include "./NeoPixel/NeoPixel.h"
 #include "./FileSystem/FileSystem.h"
 #include "./LCD/LCD.h"
-#include "SwichHandler/SwichHandler.h"
-char fileNames[255][255];
+#include "./SwichHandler/SwichHandler.h"
+#include "TITOLedCore.h"
 
+char fileNames[255][255];
 struct Leds leds[1000];
+
 int main()
 {
 
@@ -21,13 +23,12 @@ int main()
     lcd_init(16,17);
     initSd();
     initButton();
-    toggleSDCardMount(true);
-    int cant = readFileNames(fileNames);
+    int cant = 0;
     int cursor = 0;
     showFileNames(0,fileNames,cant);
     while(true)
     {
-
+        manageMenuState(&cursor,fileNames,&cant);
     }
     return 0;
 }

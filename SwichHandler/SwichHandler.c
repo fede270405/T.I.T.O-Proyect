@@ -55,7 +55,6 @@ int moveMenuCursor()
     int cursor = 0;
     if(deBounceButton(&up))
     {
-        printf("pulsadex");
         cursor = 1;
     }
     if(deBounceButton(&down))
@@ -63,4 +62,9 @@ int moveMenuCursor()
       cursor = -1;
     }
     return cursor;
+}
+
+bool getEnterButton()
+{
+    return deBounceButton(&enter);
 }
