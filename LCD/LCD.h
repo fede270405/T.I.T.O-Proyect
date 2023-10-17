@@ -40,4 +40,5 @@ void lcd_setCursor(uint8_t line, uint8_t position);
 int nameFileSize(char * str);
 void showFileNames (int cursor,char fileNames[][255],int size);
 void lcd_clear(void);
+void removeExtension(char *file,char *str,int strleng);
 #endif

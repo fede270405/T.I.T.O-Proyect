@@ -90,9 +90,7 @@ void showFileNames (int cursor,char fileNames[][255],int size)
         if(i<size)
         {
             char auxil[20];
-            memset(auxil,'\0',20);
-            strncpy(auxil,fileNames[i],20);
-            auxil[nameFileSize(fileNames[i])]= '\0';
+            removeExtension(fileNames[i],auxil,20);
 
             lcd_setCursor(i-cursor,0);
             lcd_print(auxil);
@@ -104,4 +102,11 @@ void showFileNames (int cursor,char fileNames[][255],int size)
     }
     
 }
+void removeExtension(char *file,char *str,int strleng)
+{
+    memset(str,'\0',strleng);
+    strncpy(str,file,strleng);
+    str[nameFileSize(file)] = '\0';
+}
+
 

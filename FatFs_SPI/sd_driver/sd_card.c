@@ -1139,8 +1139,13 @@ static void sd_ctor(sd_card_t *pSD) {
     pSD->read_blocks = sd_read_blocks;
     pSD->sd_test_com = sd_test_com;
 }
-bool sd_init_driver() {
+bool sd_init_driver(bool force) {
     static bool initialized;
+
+    if(force)
+        initialized = false;
+
+        
     auto_init_mutex(sd_init_driver_mutex);
     mutex_enter_blocking(&sd_init_driver_mutex);
     if (!initialized) {

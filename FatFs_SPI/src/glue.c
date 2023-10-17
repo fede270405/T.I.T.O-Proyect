@@ -54,7 +54,7 @@ DSTATUS disk_initialize(
 ) {
     TRACE_PRINTF(">>> %s\n", __FUNCTION__);
 
-    bool rc = sd_init_driver();
+    bool rc = sd_init_driver(false);
     if (!rc) return RES_NOTRDY;
 
     sd_card_t *p_sd = sd_get_by_num(pdrv);

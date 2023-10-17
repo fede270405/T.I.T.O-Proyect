@@ -5,9 +5,9 @@ FATFS fs;
 FILINFO fileInfo;
 FIL fil;
 
-void initSd()
+void initSd(bool force)
 {
-    if (!sd_init_driver()) {
+    if (!sd_init_driver(force)) {
     printf("ERROR: Could not initialize SD card\r\n");
     while (true);
     }

@@ -42,8 +42,6 @@ target_include_directories(T.I.T.O-Proyect PRIVATE
         )
 
 target_link_libraries(T.I.T.O-Proyect 
-                        
-                        
                         pico_cyw43_arch_lwip_poll
                         pico_stdlib
                         hardware_pwm hardware_spi hardware_dma hardware_adc hardware_i2c

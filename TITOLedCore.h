@@ -9,13 +9,27 @@
 typedef enum
 {
     START,
-    FILES
+    FILES,
+    READING
 };
 typedef enum 
 {
-    ERRSD
+    ERRSD,
+    ERRFILE
 };
 
-void manageMenuState(int *cursor,char fileNames[][255],int *cant);
+struct Flags {
+    uint8_t flags; 
+
+    bool loadDataFromFile : 1;
+    bool flag2 : 1;
+    bool flag3 : 1;
+    bool flag4 : 1;
+    bool flag5 : 1;
+    bool flag6 : 1;
+    bool flag7 : 1;
+    bool flag8 : 1;
+};
+void manageMenuState(int *cursor,char fileNames[][255],int *cant, struct Flags *flags);
 void showErrorMessage(int error);
 #endif
