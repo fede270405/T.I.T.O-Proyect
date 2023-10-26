@@ -10,6 +10,7 @@ void manageMenuState(int *cursor,char fileNames[][255],int *cant, struct Flags *
         case START:
             if(!writen)
             {
+                clearLEDMatrix();
                 lcd_clear();
                 lcd_setCursor(0,6);
                 lcd_setCursor(0,6);
@@ -53,13 +54,13 @@ void manageMenuState(int *cursor,char fileNames[][255],int *cant, struct Flags *
             {
                 if(*cursor == *cant-1)
                 {
-                   
                     writen = false;
                     toggleSDCardMount(false);
                     menuStates = START;
                 }
                 else
                 {
+                    clearLEDMatrix();
                     writen = false;
                     menuStates = READING;
                 }
@@ -68,9 +69,10 @@ void manageMenuState(int *cursor,char fileNames[][255],int *cant, struct Flags *
         case READING:   
             if(!writen)
             {
-                if(toggleFileAccess(fileNames[*cursor],true))
+                if(toggleFileAccess(fileNames[*cursor],true,true))
                 {
                     char auxil[20];
+                    flags->readDataComplete = false;
                     removeExtension(fileNames[*cursor],auxil,20);
                     lcd_clear();
                     lcd_setCursor(0,0);
@@ -80,6 +82,8 @@ void manageMenuState(int *cursor,char fileNames[][255],int *cant, struct Flags *
                     lcd_setCursor(3,0);
                     lcd_print("Undo, press ENTER");
                     flags->loadDataFromFile = true;
+                    flags->alreadySend = false;
+                    flags->showFileFlag = false;
                     writen = true;
                 }
                 else
@@ -95,8 +99,9 @@ void manageMenuState(int *cursor,char fileNames[][255],int *cant, struct Flags *
             }
             if(getEnterButton())
             {
-                if(toggleFileAccess(fileNames[*cursor],false))
+                if(toggleFileAccess(fileNames[*cursor],false,true))
                 {
+                    clearLEDMatrix();
                     *cant = readFileNames(fileNames);
                     *cursor = 0;
                     showFileNames(*cursor,fileNames,*cant);
@@ -118,6 +123,100 @@ void manageMenuState(int *cursor,char fileNames[][255],int *cant, struct Flags *
     }   
 
 }
+
+void updateCubeBuffersFromSD(int *index,struct Flags *flags,struct Leds *cubeBufferA,struct Leds *cubeBufferB,int shift,int framenum)
+{
+    if(flags->ledCubeDataRequest)
+    {
+        if(flags->fillBufferToggle)
+        {
+            readCubeDataColors(cubeBufferA,(*index)++,shift);
+        }
+        else
+        {
+            readCubeDataColors(cubeBufferB,(*index)++,shift);
+        }
+        if(*index >= framenum)
+        {
+            *index = 0;
+        }
+        flags->ledCubeDataRequest = false;
+    }
+}
+void showFileInLEDMatrix3D(int frameNum, int timePerFrameMs, struct Leds *cubeBufferA, struct Leds *cubeBufferB,struct Flags * flags,int *time,int *index)
+{
+    static int state = RESET;
+    if(frameNum == 1)
+    {
+        if(!flags->showFileFlag)
+        {
+            flags->fillBufferToggle = true;
+            flags->ledCubeDataRequest = true;
+            flags->alreadySend = false;
+            flags->showFileFlag = true;
+
+        }
+        if(!flags->ledCubeDataRequest)
+        {
+            if(!flags->alreadySend)
+            {
+                displayLedCube(cubeBufferA);
+                flags->alreadySend = true;
+            }
+        }
+    }
+    else
+    { 
+        switch(state)
+        {
+            case RESET:
+                if(!flags->showFileFlag)
+                {
+                    flags->fillBufferToggle = true;
+                    flags->ledCubeDataRequest = true;
+                    flags->showFileFlag = true;
+                }
+                if(!flags->ledCubeDataRequest)
+                {
+                    
+                    state = READB_PRINTA;
+                    flags->showFileFlag = false;
+                }
+            break;
+            case READB_PRINTA: 
+                if(!flags->showFileFlag)
+                {
+                    flags->fillBufferToggle = false;
+                    flags->ledCubeDataRequest = true;
+                    *time = timePerFrameMs;
+                    flags->showFileFlag = true;
+                }
+                if(!flags->ledCubeDataRequest && *time <= 0)
+                {
+                    displayLedCube(cubeBufferA);
+                    state = READA_PRINTB;
+                    flags->showFileFlag = false;
+                } 
+            break;
+            case READA_PRINTB: 
+                if(!flags->showFileFlag)
+                {
+                    flags->fillBufferToggle = true;
+                    flags->ledCubeDataRequest = true;
+                    *time = timePerFrameMs;
+                    flags->showFileFlag = true;
+                }
+                if(!flags->ledCubeDataRequest && *time <= 0)
+                {
+                    displayLedCube(cubeBufferB);
+                    state = READB_PRINTA;
+                    flags->showFileFlag = false;
+                } 
+            break;
+        }
+    }
+}
+
 
 void showErrorMessage(int error)
 {

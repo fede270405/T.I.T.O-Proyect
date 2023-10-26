@@ -35,6 +35,7 @@
         "string.h": "c",
         "filesystem.h": "c",
         "stdio.h": "c",
-        "lcd.h": "c"
+        "lcd.h": "c",
+        "cstdint": "c"
     }
 }

@@ -29,6 +29,7 @@ add_executable(T.I.T.O-Proyect
     ./LCD/LCD.c
     ./SwichHandler/SwichHandler.c
     TITOLedCore.c
+    ./Systick/Systick.c
 )
 
 add_subdirectory(./FatFs_SPI build)
@@ -44,6 +45,7 @@ target_include_directories(T.I.T.O-Proyect PRIVATE
 target_link_libraries(T.I.T.O-Proyect 
                         pico_cyw43_arch_lwip_poll
                         pico_stdlib
+                        pico_multicore
                         hardware_pwm hardware_spi hardware_dma hardware_adc hardware_i2c
                         cmsis_core FatFs_SPI)
 # enable usb output, disable uart output

@@ -5,8 +5,8 @@ uint16_t  ledPwmData_B[(24 * LEDS_MODULE)+60] = {0};
 uint16_t  ledPwmData_C[(24 * LEDS_MODULE)+60] = {0};
 uint16_t  ledPwmData_D[(24 * LEDS_MODULE)+60] = {0};
 uint16_t  ledPwmData_E[(24 * LEDS_MODULE)+60] = {0};
-dma_channel_config pwm_dma_chan_config;
-int pwm_dma_chan;
+dma_channel_config pwm_dma_chan_config[5];
+int pwm_dma_chan[5];
 
 
 void initLedPorts()
@@ -15,70 +15,76 @@ void initLedPorts()
     gpio_set_function(3, GPIO_FUNC_PWM);
 
     uint slice_num = pwm_gpio_to_slice_num(3);
-    pwm_dma_chan = dma_claim_unused_channel(true);
+    pwm_dma_chan[0] = dma_claim_unused_channel(true);
 
     pwm_config config = pwm_get_default_config();
     config.top = 212;
     pwm_init(slice_num, &config, true);
-    pwm_dma_chan_config = dma_channel_get_default_config(pwm_dma_chan);
-    channel_config_set_transfer_data_size(&pwm_dma_chan_config, DMA_SIZE_16);
-    channel_config_set_read_increment(&pwm_dma_chan_config, true);
-    channel_config_set_write_increment(&pwm_dma_chan_config, false);
-    channel_config_set_dreq(&pwm_dma_chan_config, DREQ_PWM_WRAP0 + slice_num);
+    pwm_dma_chan_config[0] = dma_channel_get_default_config(pwm_dma_chan[0]);
+    channel_config_set_transfer_data_size(&pwm_dma_chan_config[0], DMA_SIZE_16);
+    channel_config_set_read_increment(&pwm_dma_chan_config[0], true);
+    channel_config_set_write_increment(&pwm_dma_chan_config[0], false);
+    channel_config_set_dreq(&pwm_dma_chan_config[0], DREQ_PWM_WRAP0 + slice_num);
 
     //Channel B
-        gpio_set_function(3, GPIO_FUNC_PWM);
+    gpio_set_function(4, GPIO_FUNC_PWM);
 
     slice_num = pwm_gpio_to_slice_num(4);
-    pwm_dma_chan = dma_claim_unused_channel(true);
+    pwm_dma_chan[1] = dma_claim_unused_channel(true);
 
     
     config.top = 212;
     pwm_init(slice_num, &config, true);
-    pwm_dma_chan_config = dma_channel_get_default_config(pwm_dma_chan);
-    channel_config_set_transfer_data_size(&pwm_dma_chan_config, DMA_SIZE_16);
-    channel_config_set_read_increment(&pwm_dma_chan_config, true);
-    channel_config_set_write_increment(&pwm_dma_chan_config, false);
-    channel_config_set_dreq(&pwm_dma_chan_config, DREQ_PWM_WRAP0 + slice_num);
+    pwm_dma_chan_config[1] = dma_channel_get_default_config(pwm_dma_chan[1]);
+    channel_config_set_transfer_data_size(&pwm_dma_chan_config[1], DMA_SIZE_16);
+    channel_config_set_read_increment(&pwm_dma_chan_config[1], true);
+    channel_config_set_write_increment(&pwm_dma_chan_config[1], false);
+    channel_config_set_dreq(&pwm_dma_chan_config[1], DREQ_PWM_WRAP0 + slice_num);
 
     // Channel C
+    gpio_set_function(5, GPIO_FUNC_PWM);
     slice_num = pwm_gpio_to_slice_num(5);
-    pwm_dma_chan = dma_claim_unused_channel(true);
+    pwm_dma_chan[2] = dma_claim_unused_channel(true);
 
     
     config.top = 212;
     pwm_init(slice_num, &config, true);
-    pwm_dma_chan_config = dma_channel_get_default_config(pwm_dma_chan);
-    channel_config_set_transfer_data_size(&pwm_dma_chan_config, DMA_SIZE_16);
-    channel_config_set_read_increment(&pwm_dma_chan_config, true);
-    channel_config_set_write_increment(&pwm_dma_chan_config, false);
-    channel_config_set_dreq(&pwm_dma_chan_config, DREQ_PWM_WRAP0 + slice_num);
+    pwm_dma_chan_config[2] = dma_channel_get_default_config(pwm_dma_chan[2]);
+    channel_config_set_transfer_data_size(&pwm_dma_chan_config[2], DMA_SIZE_16);
+    channel_config_set_read_increment(&pwm_dma_chan_config[2], true);
+    channel_config_set_write_increment(&pwm_dma_chan_config[2], false);
+    channel_config_set_dreq(&pwm_dma_chan_config[2], DREQ_PWM_WRAP0 + slice_num);
+
+    dma_channel_configure(pwm_dma_chan[2], &pwm_dma_chan_config[2], &pwm_hw->slice[slice_num].cc,
+                ledPwmData_C,  (24 * LEDS_MODULE)+60, false );  
 
     // Channel D
+    gpio_set_function(21, GPIO_FUNC_PWM);
     slice_num = pwm_gpio_to_slice_num(21);
-    pwm_dma_chan = dma_claim_unused_channel(true);
+    pwm_dma_chan[3] = dma_claim_unused_channel(true);
 
    
     config.top = 212;
     pwm_init(slice_num, &config, true);
-    pwm_dma_chan_config = dma_channel_get_default_config(pwm_dma_chan);
-    channel_config_set_transfer_data_size(&pwm_dma_chan_config, DMA_SIZE_16);
-    channel_config_set_read_increment(&pwm_dma_chan_config, true);
-    channel_config_set_write_increment(&pwm_dma_chan_config, false);
-    channel_config_set_dreq(&pwm_dma_chan_config, DREQ_PWM_WRAP0 + slice_num);
+    pwm_dma_chan_config[3] = dma_channel_get_default_config(pwm_dma_chan[3]);
+    channel_config_set_transfer_data_size(&pwm_dma_chan_config[3], DMA_SIZE_16);
+    channel_config_set_read_increment(&pwm_dma_chan_config[3], true);
+    channel_config_set_write_increment(&pwm_dma_chan_config[3], false);
+    channel_config_set_dreq(&pwm_dma_chan_config[3], DREQ_PWM_WRAP0 + slice_num);
 
     // Channel E
+    gpio_set_function(20, GPIO_FUNC_PWM);
     slice_num = pwm_gpio_to_slice_num(20);
-    pwm_dma_chan = dma_claim_unused_channel(true);
+    pwm_dma_chan[4] = dma_claim_unused_channel(true);
 
     
     config.top = 212;
     pwm_init(slice_num, &config, true);
-    pwm_dma_chan_config = dma_channel_get_default_config(pwm_dma_chan);
-    channel_config_set_transfer_data_size(&pwm_dma_chan_config, DMA_SIZE_16);
-    channel_config_set_read_increment(&pwm_dma_chan_config, true);
-    channel_config_set_write_increment(&pwm_dma_chan_config, false);
-    channel_config_set_dreq(&pwm_dma_chan_config, DREQ_PWM_WRAP0 + slice_num);
+    pwm_dma_chan_config[4] = dma_channel_get_default_config(pwm_dma_chan[4]);
+    channel_config_set_transfer_data_size(&pwm_dma_chan_config[4], DMA_SIZE_16);
+    channel_config_set_read_increment(&pwm_dma_chan_config[4], true);
+    channel_config_set_write_increment(&pwm_dma_chan_config[4], false);
+    channel_config_set_dreq(&pwm_dma_chan_config[4], DREQ_PWM_WRAP0 + slice_num);
 }
 
 void setLedPwmData(struct Leds leds,uint8_t ledNum, uint8_t channel)
@@ -139,27 +145,44 @@ void sendLedPwmData(uint8_t channel)
     {
         case A:
              slice_num = pwm_gpio_to_slice_num(3);
-            dma_channel_configure(pwm_dma_chan, &pwm_dma_chan_config, &pwm_hw->slice[slice_num].cc,
+            dma_channel_configure(pwm_dma_chan[0], &pwm_dma_chan_config[0], &pwm_hw->slice[slice_num].cc,
                 ledPwmData_A,  (24 * LEDS_MODULE)+60, true );
         break;
         case B:
+
+            gpio_set_function(4, GPIO_FUNC_PWM);
+            gpio_set_function(5, GPIO_FUNC_NULL);
+            gpio_set_function(20, GPIO_FUNC_NULL);
+            gpio_set_function(21, GPIO_FUNC_NULL);
+
              slice_num = pwm_gpio_to_slice_num(4);
-            dma_channel_configure(pwm_dma_chan, &pwm_dma_chan_config, &pwm_hw->slice[slice_num].cc,
+            dma_channel_configure(pwm_dma_chan[1], &pwm_dma_chan_config[1], &pwm_hw->slice[slice_num].cc,
                 ledPwmData_B,  (24 * LEDS_MODULE)+60, true );           
         break;
         case C:
+        gpio_set_function(4, GPIO_FUNC_NULL);
+            gpio_set_function(5, GPIO_FUNC_PWM);
+            gpio_set_function(20, GPIO_FUNC_NULL);
+            gpio_set_function(21, GPIO_FUNC_NULL);
             slice_num = pwm_gpio_to_slice_num(5);
-            dma_channel_configure(pwm_dma_chan, &pwm_dma_chan_config, &pwm_hw->slice[slice_num].cc,
-                ledPwmData_C,  (24 * LEDS_MODULE)+60, true );                 
+            dma_channel_set_read_addr(pwm_dma_chan[2], ledPwmData_C, true);
         break;
         case D:
-             slice_num = pwm_gpio_to_slice_num(20);
-            dma_channel_configure(pwm_dma_chan, &pwm_dma_chan_config, &pwm_hw->slice[slice_num].cc,
+        gpio_set_function(4, GPIO_FUNC_NULL);
+            gpio_set_function(5, GPIO_FUNC_NULL);
+            gpio_set_function(20, GPIO_FUNC_NULL);
+            gpio_set_function(21, GPIO_FUNC_PWM);
+             slice_num = pwm_gpio_to_slice_num(21);
+            dma_channel_configure(pwm_dma_chan[3], &pwm_dma_chan_config[3], &pwm_hw->slice[slice_num].cc,
                 ledPwmData_D,  (24 * LEDS_MODULE)+60, true );                
         break;  
         case E:
-             slice_num = pwm_gpio_to_slice_num(21);
-            dma_channel_configure(pwm_dma_chan, &pwm_dma_chan_config, &pwm_hw->slice[slice_num].cc,
+        gpio_set_function(4, GPIO_FUNC_NULL);
+            gpio_set_function(5, GPIO_FUNC_NULL);
+            gpio_set_function(20, GPIO_FUNC_PWM);
+            gpio_set_function(21, GPIO_FUNC_NULL);
+             slice_num = pwm_gpio_to_slice_num(20);
+            dma_channel_configure(pwm_dma_chan[4], &pwm_dma_chan_config[4], &pwm_hw->slice[slice_num].cc,
                 ledPwmData_E,  (24 * LEDS_MODULE)+60, true );                
         break;               
     }    
@@ -169,7 +192,7 @@ void sendLedPwmData(uint8_t channel)
  void setLedsModule(struct Leds leds[],int8_t channel)
  {
         int i = 0;
-        int x = 0;
+        int x = channel*2;
         int y = 0;
         int z = 0;
         while(i<LEDS_MODULE)
@@ -188,3 +211,45 @@ void sendLedPwmData(uint8_t channel)
         }
  }
 
+void displayLedCube(struct Leds leds[])
+{
+    setLedsModule(leds,A);
+    setLedsModule(leds,B);
+    setLedsModule(leds,C);
+    setLedsModule(leds,D);
+    setLedsModule(leds,E);
+    
+    sendLedPwmData(A);
+    while(dma_channel_is_busy(pwm_dma_chan[0])){}
+    sendLedPwmData(B);
+    while(dma_channel_is_busy(pwm_dma_chan[1])){}
+    sendLedPwmData(C);
+    while(dma_channel_is_busy(pwm_dma_chan[2])){}
+    sendLedPwmData(D);
+    while(dma_channel_is_busy(pwm_dma_chan[3])){}
+    sendLedPwmData(E);
+    while(dma_channel_is_busy(pwm_dma_chan[4])){}
+}
+
+void clearLEDMatrix()
+{
+    struct Leds leds[1000];
+
+    memset(leds,0,sizeof(struct Leds)*1000);
+    setLedsModule(leds,A);
+    setLedsModule(leds,B);
+    setLedsModule(leds,C);
+    setLedsModule(leds,D);
+    setLedsModule(leds,E);
+    
+    sendLedPwmData(A);
+    while(dma_channel_is_busy(pwm_dma_chan[0])){}
+    sendLedPwmData(B);
+    while(dma_channel_is_busy(pwm_dma_chan[1])){}
+    sendLedPwmData(C);
+    while(dma_channel_is_busy(pwm_dma_chan[2])){}
+    sendLedPwmData(D);
+    while(dma_channel_is_busy(pwm_dma_chan[3])){}
+    sendLedPwmData(E);
+    while(dma_channel_is_busy(pwm_dma_chan[4])){}
+}

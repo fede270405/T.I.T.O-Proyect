@@ -1,6 +1,8 @@
 #if !defined(NeoPixel)
 #define NeoPixel
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "pico/stdlib.h"
 #include "hardware/pwm.h"
 #include "hardware/dma.h"
@@ -18,6 +20,8 @@ void initLedPorts();
 void setLedPwmData(struct Leds leds,uint8_t ledNum, uint8_t channel);
 void sendLedPwmData(uint8_t channel);
 void setLedsModule(struct Leds leds[],int8_t channel);
+void displayLedCube(struct Leds leds[]);
+void clearLEDMatrix();
 typedef enum 
 {
     A,

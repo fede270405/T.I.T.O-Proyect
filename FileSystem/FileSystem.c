@@ -77,11 +77,13 @@ int readFileNames(char fileNames[][255])
     }
 }
 
-bool toggleFileAccess(char *fileName,bool open)
+bool toggleFileAccess(char *fileName,bool open,bool read)
 {
+    
+    int val = (read) ?  FA_READ:(FA_CREATE_ALWAYS|FA_WRITE);
     if(open)
     {
-        fr = f_open(&fil, fileName, FA_WRITE| FA_CREATE_ALWAYS);
+        fr = f_open(&fil, fileName, val);
         if (fr != FR_OK) 
         {
             return false;
@@ -98,16 +100,39 @@ bool toggleFileAccess(char *fileName,bool open)
     return true;
 }
 
-void writeCubeDataColors(struct Leds *leds,uint16_t index)
+void writeCubeDataColors(struct Leds *leds,uint16_t index,int shift)
 {
-    uint32_t position = index * sizeof(struct Leds) * 1000;
+    uint32_t position = (index * sizeof(struct Leds) * 1000)+shift;
     f_lseek(&fil,position);
     f_write(&fil, leds, sizeof(struct Leds) * 1000, &leds);
  }
 
- void readCubeDataColors(struct Leds *leds,uint16_t index)
+ void readCubeDataColors(struct Leds *leds,uint16_t index,int shift)
  {
-    uint32_t position = index * sizeof(struct Leds) * 1000;
+    uint32_t position = (index * sizeof(struct Leds) * 1000)+shift;
     f_lseek(&fil,position);
-    f_write(&fil, leds, sizeof(struct Leds) * 1000, &leds);
+    f_read(&fil, leds, sizeof(struct Leds) * 1000, &leds);
  }
+
+int readAnimationData(int *frames,int * timeperframe)
+{
+    uint32_t position = 0;
+    f_lseek(&fil,position);
+    f_read(&fil,frames, sizeof(int),&frames);
+    position += sizeof(int);
+    f_lseek(&fil,position);
+    f_read(&fil,timeperframe, sizeof(int),&timeperframe);
+    position += sizeof(int);
+    return position;
+}
+int writeAnimationData(int *frames,int * timeperframe)
+{
+    uint32_t position = 0;
+    f_lseek(&fil,position);
+    f_write(&fil,frames, sizeof(int),&frames);
+    position += sizeof(int);
+    f_lseek(&fil,position);
+    f_write(&fil,timeperframe, sizeof(int),&timeperframe);
+    position += sizeof(int);
+    return position;
+}
