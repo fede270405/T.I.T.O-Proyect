@@ -123,7 +123,6 @@ void manageMenuState(int *cursor,char fileNames[][255],int *cant, struct Flags *
     }   
 
 }
-
 void updateCubeBuffersFromSD(int *index,struct Flags *flags,struct Leds *cubeBufferA,struct Leds *cubeBufferB,int shift,int framenum)
 {
     if(flags->ledCubeDataRequest)
@@ -140,6 +139,23 @@ void updateCubeBuffersFromSD(int *index,struct Flags *flags,struct Leds *cubeBuf
         {
             *index = 0;
         }
+        flags->ledCubeDataRequest = false;
+    }
+}
+
+void updateCubeBuffersFromMicrophone(int *index,struct Flags *flags,struct Leds *cubeBufferA,struct Leds *cubeBufferB)
+{
+    if(flags->ledCubeDataRequest)
+    {
+        if(flags->fillBufferToggle)
+        {
+            
+        }
+        else
+        {
+            
+        }
+
         flags->ledCubeDataRequest = false;
     }
 }
@@ -216,7 +232,14 @@ void showFileInLEDMatrix3D(int frameNum, int timePerFrameMs, struct Leds *cubeBu
         }
     }
 }
-
+void initModules()
+{
+    initLedPorts();
+    lcd_init(16,17);
+    initSd(false);
+    initButton();
+    systickInit();
+}
 
 void showErrorMessage(int error)
 {

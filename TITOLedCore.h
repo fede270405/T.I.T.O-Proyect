@@ -6,6 +6,7 @@
 #include "./FileSystem/FileSystem.h"
 #include "./LCD/LCD.h"
 #include "./SwichHandler/SwichHandler.h"
+#include "./Systick/Systick.h"
 typedef enum
 {
     START,
@@ -36,6 +37,7 @@ struct Flags {
     bool flag7 : 1;
     bool flag8 : 1;
 };
+void initModules();
 void showErrorMessage(int error);
 void manageMenuState(int *cursor,char fileNames[][255],int *cant, struct Flags *flags);
 void updateCubeBuffersFromSD(int *index,struct Flags *flags,struct Leds *cubeBufferA,struct Leds *cubeBufferB,int shift,int framenum);

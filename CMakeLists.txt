@@ -30,6 +30,7 @@ add_executable(T.I.T.O-Proyect
     ./SwichHandler/SwichHandler.c
     TITOLedCore.c
     ./Systick/Systick.c
+    ./AudioCapture/AudioCapture.c
 )
 
 add_subdirectory(./FatFs_SPI build)
